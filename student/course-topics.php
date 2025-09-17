@@ -56,56 +56,135 @@ if ($topicId) {
     <link href="assets/css/student-styles.css" rel="stylesheet">
     <style>
         .topic-sidebar {
-            background: #f8f9fa;
-            border-right: 1px solid #dee2e6;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            border-right: 1px solid var(--border-color);
             height: calc(100vh - 120px);
             overflow-y: auto;
+            box-shadow: inset -1px 0 3px rgba(0, 0, 0, 0.05);
         }
+        
         .topic-item {
-            padding: 10px 15px;
-            border-bottom: 1px solid #e9ecef;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-color);
         }
-        .topic-item:hover, .topic-item.active {
-            background-color: #e9ecef;
+        
+        .topic-item:hover {
+            background: var(--primary-light);
+            transform: translateX(4px);
+            color: var(--primary-color);
         }
+        
         .topic-item.active {
-            border-left: 3px solid var(--primary-color);
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary-color);
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .resource-card {
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--box-shadow-lg);
+        }
+        
+        .resource-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .resource-card:hover .resource-icon {
+            transform: scale(1.1);
+        }
+        
+        .resource-card .card-body {
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .resource-card h5 {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .resource-card .text-muted {
+            margin-bottom: 1.5rem;
             font-weight: 500;
         }
-        .resource-card {
-            margin-bottom: 1rem;
-            transition: transform 0.2s;
+        
+        /* Enhanced Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--gray-50) 100%);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
         }
-        .resource-card:hover {
-            transform: translateY(-2px);
+        
+        .empty-state::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
         }
-        .resource-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+        }
+        
+        .empty-state h4 {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .empty-state p {
+            color: var(--text-muted);
+            font-size: 1.125rem;
         }
     </style>
 </head>
 <body>
     <div class="container-fluid p-0">
         <!-- Header -->
-        <header class="bg-white shadow-sm py-3">
+        <header class="bg-white shadow-sm py-4">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <a href="index.php" class="text-decoration-none">
+                        <a href="index.php" class="text-decoration-none d-flex align-items-center">
                             <i class="fas fa-arrow-left me-2"></i> Back to Courses
                         </a>
-                        <h4 class="mb-0 ms-4 d-inline"><?= htmlspecialchars($course->name) ?></h4>
+                        <h4 class="mb-0 ms-4 d-inline text-primary"><?= htmlspecialchars($course->name) ?></h4>
                     </div>
                     <div class="d-flex align-items-center">
-                        <span class="me-3">
+                        <span class="me-3 text-muted">
                             <i class="fas fa-user-circle me-1"></i> 
                             <?= htmlspecialchars($_SESSION['USERNAME']) ?>
                         </span>
-                        <a href="../logout.php" class="btn btn-sm btn-outline-primary">
+                        <a href="../logout.php" class="btn btn-sm btn-outline-danger">
                             <i class="fas fa-sign-out-alt me-1"></i> Sign Out
                         </a>
                     </div>
@@ -117,31 +196,40 @@ if ($topicId) {
             <div class="row">
                 <!-- Topics Sidebar -->
                 <div class="col-md-3 p-0 topic-sidebar">
-                    <div class="p-3 border-bottom">
-                        <h5>Course Topics</h5>
+                    <div class="p-4 border-bottom">
+                        <h5 class="mb-0 text-primary font-weight-bold">
+                            <i class="fas fa-list-ul me-2"></i>Course Topics
+                        </h5>
                     </div>
                     <div class="list-group list-group-flush">
                         <?php if (count($topics) > 0): ?>
                             <?php foreach ($topics as $topic): ?>
                                 <a href="?id=<?= $courseId ?>&topic_id=<?= $topic->id ?>" 
                                    class="list-group-item list-group-item-action topic-item <?= ($selectedTopic && $selectedTopic->id == $topic->id) ? 'active' : '' ?>">
+                                    <i class="fas fa-bookmark me-2"></i>
                                     <?= htmlspecialchars($topic->title) ?>
                                 </a>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <div class="p-3 text-muted">No topics available for this course.</div>
+                            <div class="p-4 text-center">
+                                <i class="fas fa-folder-open fa-2x text-muted mb-2"></i>
+                                <p class="text-muted mb-0">No topics available for this course.</p>
+                            </div>
                         <?php endif; ?>
                     </div>
                 </div>
 
                 <!-- Main Content -->
-                <div class="col-md-9 p-4">
+                <div class="col-md-9 p-5">
                     <?php if ($selectedTopic): ?>
-                        <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex justify-content-between align-items-start mb-5">
                             <div>
-                                <h3><?= htmlspecialchars($selectedTopic->title) ?></h3>
+                                <h3 class="text-primary mb-3">
+                                    <i class="fas fa-bookmark me-2"></i>
+                                    <?= htmlspecialchars($selectedTopic->title) ?>
+                                </h3>
                                 <?php if (!empty($selectedTopic->description)): ?>
-                                    <p class="text-muted"><?= nl2br(htmlspecialchars($selectedTopic->description)) ?></p>
+                                    <p class="text-muted lead"><?= nl2br(htmlspecialchars($selectedTopic->description)) ?></p>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -149,31 +237,31 @@ if ($topicId) {
                         <div class="row">
                             <?php if (count($resources) > 0): ?>
                                 <?php foreach ($resources as $resource): ?>
-                                    <div class="col-md-6 col-lg-4">
+                                    <div class="col-md-6 col-lg-4 mb-4">
                                         <div class="card resource-card h-100">
                                             <div class="card-body text-center">
                                                 <?php if ($resource->resource_type === 'video'): ?>
-                                                    <i class="fas fa-play-circle resource-icon"></i>
+                                                    <i class="fas fa-play-circle resource-icon text-danger"></i>
                                                     <h5><?= htmlspecialchars($resource->title) ?></h5>
-                                                    <p class="text-muted small">Video Resource</p>
-                                                    <button class="btn btn-outline-primary btn-sm" 
+                                                    <p class="text-muted small mb-3">Video Resource</p>
+                                                    <button class="btn btn-primary btn-sm" 
                                                             onclick="openResource('<?= htmlspecialchars($resource->content, ENT_QUOTES) ?>', 'video')">
                                                         <i class="fas fa-play me-1"></i> Watch Video
                                                     </button>
                                                 <?php elseif ($resource->resource_type === 'pdf'): ?>
-                                                    <i class="fas fa-file-pdf resource-icon"></i>
+                                                    <i class="fas fa-file-pdf resource-icon text-danger"></i>
                                                     <h5><?= htmlspecialchars($resource->title) ?></h5>
-                                                    <p class="text-muted small">PDF Document</p>
+                                                    <p class="text-muted small mb-3">PDF Document</p>
                                                     <a href="<?= htmlspecialchars($resource->content) ?>" 
-                                                       class="btn btn-outline-primary btn-sm" target="_blank">
+                                                       class="btn btn-primary btn-sm" target="_blank">
                                                         <i class="fas fa-download me-1"></i> Download PDF
                                                     </a>
                                                 <?php else: // link ?>
-                                                    <i class="fas fa-link resource-icon"></i>
+                                                    <i class="fas fa-external-link-alt resource-icon text-info"></i>
                                                     <h5><?= htmlspecialchars($resource->title) ?></h5>
-                                                    <p class="text-muted small">External Resource</p>
+                                                    <p class="text-muted small mb-3">External Resource</p>
                                                     <a href="<?= htmlspecialchars($resource->content) ?>" 
-                                                       class="btn btn-outline-primary btn-sm" target="_blank">
+                                                       class="btn btn-primary btn-sm" target="_blank">
                                                         <i class="fas fa-external-link-alt me-1"></i> Open Link
                                                     </a>
                                                 <?php endif; ?>
@@ -183,8 +271,8 @@ if ($topicId) {
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <div class="col-12">
-                                    <div class="text-center p-5 bg-light rounded-3">
-                                        <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+                                    <div class="empty-state">
+                                        <i class="fas fa-folder-open"></i>
                                         <h4 class="text-muted">No Resources Available</h4>
                                         <p class="text-muted">This topic doesn't have any resources yet.</p>
                                     </div>
@@ -192,8 +280,8 @@ if ($topicId) {
                             <?php endif; ?>
                         </div>
                     <?php else: ?>
-                        <div class="text-center p-5 bg-light rounded-3">
-                            <i class="fas fa-book-open fa-4x text-muted mb-3"></i>
+                        <div class="empty-state">
+                            <i class="fas fa-book-open"></i>
                             <h4 class="text-muted">No Topic Selected</h4>
                             <p class="text-muted">Select a topic from the sidebar to view its content.</p>
                         </div>
@@ -205,16 +293,23 @@ if ($topicId) {
 
     <!-- Video Modal -->
     <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="videoModalLabel">Video Player</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title text-white" id="videoModalLabel">
+                        <i class="fas fa-play-circle me-2"></i>Video Player
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
                     <div class="ratio ratio-16x9">
                         <iframe id="videoFrame" src="" allowfullscreen></iframe>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Close
+                    </button>
                 </div>
             </div>
         </div>
@@ -228,6 +323,7 @@ if ($topicId) {
             if (type === 'video') {
                 const videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
                 const videoFrame = document.getElementById('videoFrame');
+                const modalTitle = document.getElementById('videoModalLabel');
                 
                 // Check if URL is YouTube or Vimeo embed URL
                 if (url.includes('youtube.com/embed/') || url.includes('player.vimeo.com/video/')) {
@@ -253,6 +349,33 @@ if ($topicId) {
         document.getElementById('videoModal').addEventListener('hidden.bs.modal', function () {
             const videoFrame = document.getElementById('videoFrame');
             videoFrame.src = '';
+        });
+        
+        // Enhanced page animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate topic items
+            const topicItems = document.querySelectorAll('.topic-item');
+            topicItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.3s ease-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, index * 50);
+            });
+            
+            // Animate resource cards
+            const resourceCards = document.querySelectorAll('.resource-card');
+            resourceCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.4s ease-out';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100 + 200);
+            });
         });
     </script>
 </body>

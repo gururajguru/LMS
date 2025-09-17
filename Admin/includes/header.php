@@ -33,25 +33,44 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
     <!-- Critical CSS -->
     <style>
         :root {
+            /* Modern Color Palette */
+            --primary: #2563EB;
+            --primary-hover: #1D4ED8;
+            --primary-light: #EFF6FF;
+            --secondary: #64748B;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            --light: #F8FAFC;
+            --dark: #0F172A;
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+            --card-bg: #FFFFFF;
+            --input-bg: #F9FAFB;
+            
+            /* Design Tokens */
+            --border-radius: 0.75rem;
+            --border-radius-sm: 0.5rem;
+            --border-radius-lg: 1rem;
+            --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+            --gradient-accent: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+
+        :root {
             --sidebar-width: 280px;
             --header-height: 60px;
-            --darker: #0B1120;
-            --dark: #111827;
-            --light: #F3F4F6;
-            --lighter: #F8FAFC;
-            --primary: #4F46E5;
-            --primary-hover: #4338CA;
-            --success: #059669;
-            --warning: #D97706;
-            --danger: #DC2626;
-            --card-bg: #FFFFFF;
-            --text-primary: #1F2937;
-            --text-secondary: #6B7280;
-            --text-muted: #9CA3AF;
+            --bg-sidebar: #1E293B;
+            --bg-body: #F9FAFB;
             --text-light: rgba(255, 255, 255, 0.95);
             --text-light-secondary: rgba(255, 255, 255, 0.7);
-            --border-light: rgba(255, 255, 255, 0.1);
-            --border-color: #E5E7EB;
             --transition: 0.2s ease-in-out;
         }
 
@@ -62,7 +81,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--lighter);
+            background-color: var(--bg-body);
             color: var(--text-primary);
             margin: 0;
             padding: 0;
@@ -81,8 +100,8 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         
         .sidebar {
             width: var(--sidebar-width);
-            background-color: var(--darker);
-            color: var(--light);
+            background: var(--bg-sidebar);
+            color: var(--text-light);
             position: fixed;
             top: 0;
             left: 0;
@@ -90,16 +109,16 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
             overflow-y: auto;
             z-index: 1000;
             transition: transform 0.3s ease-in-out;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
         }
         
         /* Main content */
         .main-content {
             flex: 1;
-            padding: 1.5rem;
+            padding: 2rem;
             width: 100%;
             min-height: 100vh;
-            background-color: var(--lighter);
+            background-color: var(--bg-body);
             box-sizing: border-box;
         }
         
@@ -129,7 +148,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         .admin-container {
             display: flex;
             min-height: 100vh;
-            background-color: var(--lighter);
+            background-color: var(--bg-body);
             position: relative;
         }
         
@@ -137,7 +156,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         .sidebar {
             width: var(--sidebar-width);
             min-height: 100vh;
-            background: var(--darker);
+            background: var(--bg-sidebar);
             color: var(--text-light);
             flex-shrink: 0;
             display: flex;
@@ -151,25 +170,25 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         }
 
         .sidebar-header {
-            padding: 1.75rem 1.5rem;
+            padding: 2rem 1.5rem 1.5rem;
             background: rgba(0, 0, 0, 0.2);
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 0.5rem;
         }
 
         .sidebar-header h4 {
             margin: 0;
             color: var(--text-light);
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.375rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             letter-spacing: -0.01em;
         }
 
         .sidebar-header p {
-            margin: 0.25rem 0 0;
+            margin: 0.5rem 0 0;
             font-size: 0.875rem;
             color: var(--text-light-secondary);
             font-weight: 400;
@@ -182,7 +201,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         }
 
         .nav-link {
-            padding: 0.875rem 1.75rem;
+            padding: 1rem 1.75rem;
             color: var(--text-light-secondary);
             display: flex;
             align-items: center;
@@ -191,29 +210,21 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
             transition: all var(--transition);
             border-left: 3px solid transparent;
             font-size: 0.9375rem;
+            font-weight: 500;
             position: relative;
         }
 
         .nav-link:hover {
             color: var(--text-light);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
         }
 
         .nav-link.active {
             color: var(--text-light);
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(37, 99, 235, 0.2);
             border-left-color: var(--primary);
-            font-weight: 500;
-        }
-
-        .nav-link.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--primary);
+            font-weight: 600;
         }
 
         .nav-link i {
@@ -221,6 +232,13 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
             text-align: center;
             font-size: 1.125rem;
             opacity: 0.9;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover i,
+        .nav-link.active i {
+            opacity: 1;
+            transform: scale(1.1);
         }
         
         /* Main Content */
@@ -229,8 +247,8 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
             margin-left: var(--sidebar-width);
             width: calc(100% - var(--sidebar-width));
             min-height: 100vh;
-            padding: 1.5rem;
-            background-color: var(--lighter);
+            padding: 2rem;
+            background-color: var(--bg-body);
             box-sizing: border-box;
             position: relative;
             transition: all 0.3s ease;
@@ -274,43 +292,141 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
             .main-content {
                 margin-left: 0;
                 width: 100%;
+                padding: 1.5rem;
             }
             
             .sidebar {
                 transform: translateX(-100%);
-                position: fixed;
-                z-index: 1040;
+                box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
             }
             
-            .sidebar.show {
+            .admin-container.sidebar-visible .sidebar {
                 transform: translateX(0);
             }
-            
-            .sidebar-backdrop {
-                display: block;
+
+            #sidebarToggle {
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                width: 3.5rem !important;
+                height: 3.5rem !important;
+                border-radius: 50% !important;
+                box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+                background: linear-gradient(135deg, var(--primary) 0%, var(--info) 100%) !important;
+                border: none !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                color: white !important;
+                z-index: 1060;
+                transition: var(--transition);
             }
+
+            #sidebarToggle:hover {
+                transform: scale(1.1);
+                box-shadow: 0 12px 35px rgba(37, 99, 235, 0.4);
+            }
+
+            #sidebarToggle i {
+                font-size: 1.25rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Loading Screen */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--bg-body);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity var(--transition), visibility var(--transition);
+        }
+
+        .loading .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: var(--primary) !important;
+        }
+
+        .js-loaded .loading {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Scrollbars */
+        .sidebar-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Utilities */
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
         }
 
         /* Typography */
         h1, .h1 {
-            font-size: 1.75rem;
-            font-weight: 600;
+            font-size: 2.25rem;
+            font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 0.25rem;
             line-height: 1.2;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.025em;
         }
 
         h2, .h2 {
-            font-size: 1.5rem;
+            font-size: 1.875rem;
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 1rem;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
         }
 
         h3, .h3 {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 0.75rem;
@@ -330,7 +446,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         /* Dashboard Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2.5rem;
         }
@@ -338,43 +454,68 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         .stat-card {
             background: var(--card-bg);
             border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--box-shadow-lg);
         }
 
         .stat-card .stat-icon {
-            width: 3rem;
-            height: 3rem;
+            width: 3.5rem;
+            height: 3.5rem;
             border-radius: 0.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             color: var(--text-light);
+            background: var(--gradient-primary);
+            box-shadow: var(--box-shadow);
         }
 
         .stat-card .stat-title {
             color: var(--text-muted);
             font-size: 0.875rem;
             margin: 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .stat-card .stat-value {
             color: var(--text-primary);
-            font-size: 1.75rem;
-            font-weight: 600;
+            font-size: 2.25rem;
+            font-weight: 700;
             margin: 0;
             line-height: 1;
+            letter-spacing: -0.025em;
         }
 
         /* Tables */
         .table-section {
             background: var(--card-bg);
             border-radius: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
             margin-bottom: 2rem;
         }
 
@@ -438,7 +579,7 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         .calendar-section {
             background: var(--card-bg);
             border-radius: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
             padding: 1.5rem;
         }
 
@@ -454,135 +595,45 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
             opacity: 0.5;
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 991.98px) {
-            .sidebar {
-                transform: translateX(-100%);
-                position: fixed;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                z-index: 1040;
-                box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
-                transition: transform 0.3s ease-in-out;
-            }
-            
-            .sidebar.show {
-                transform: translateX(0);
-            }
-            
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-            }
-                padding: 1.25rem;
-                width: 100%;
-            }
-            
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform var(--transition);
-            }
-            
-            .admin-container.sidebar-visible .sidebar {
-                transform: translateX(0);
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-            }
-
-            #sidebarToggle {
-                width: 3.5rem !important;
-                height: 3.5rem !important;
-                border-radius: 50% !important;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                background-color: var(--primary) !important;
-                border: none !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                color: white !important;
-            }
-
-            #sidebarToggle i {
-                font-size: 1.25rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
+        /* Recent Section */
+        .recent-section {
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.5rem;
         }
 
-        @media (min-width: 768px) and (max-width: 991.98px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Loading Screen */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--lighter);
-            z-index: 9999;
+        .recent-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            opacity: 1;
-            visibility: visible;
-            transition: opacity var(--transition), visibility var(--transition);
+            margin-bottom: 1rem;
         }
 
-        .loading .spinner-border {
-            width: 3rem;
-            height: 3rem;
-            color: var(--primary) !important;
+        .recent-title {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
         }
 
-        .js-loaded .loading {
-            opacity: 0;
-            visibility: hidden;
+        .recent-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        /* Scrollbars */
-        .sidebar-nav::-webkit-scrollbar {
-            width: 4px;
+        .recent-item:last-child {
+            border-bottom: none;
         }
 
-        .sidebar-nav::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
+        .recent-link {
+            color: var(--text-primary);
+            text-decoration: none;
         }
 
-        .sidebar-nav::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        .sidebar-nav::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Utilities */
-        .fade-in {
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .page-header {
-            margin-bottom: 2rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+        .recent-link:hover {
+            color: var(--primary);
         }
     </style>
 

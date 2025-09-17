@@ -59,11 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4a6cf7;
-            --primary-dark: #3a5bd9;
+            --primary-color: #2563EB;
+            --primary-dark: #1D4ED8;
             --text-color: #333;
-            --light-gray: #f5f7ff;
-            --border-color: #e0e4f5;
+            --light-gray: #EFF6FF;
+            --border-color: #E5E7EB;
             --error-color: #ff4444;
             --success-color: #00c851;
         }
@@ -76,150 +76,189 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f5f7ff 0%, #e4e8ff 100%);
+            background: linear-gradient(135deg, #F9FAFB 0%, #EFF6FF 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 2rem;
             color: var(--text-color);
             line-height: 1.6;
         }
         
         .login-container {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
             overflow: hidden;
             position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.02);
         }
         
         .login-header {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1E40AF 100%);
             color: white;
-            padding: 30px 30px 25px;
+            padding: 2.5rem 2rem 2rem;
             text-align: center;
+            position: relative;
+        }
+        
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.1;
         }
         
         .login-header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 5px;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
         }
         
         .login-header p {
             opacity: 0.9;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+            margin: 0;
         }
         
         .login-form {
-            padding: 30px;
+            padding: 2.5rem;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.75rem;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
             color: var(--text-color);
-            font-size: 0.95rem;
+            font-size: 0.9375rem;
+            letter-spacing: 0.025em;
         }
         
         .form-control {
             width: 100%;
-            padding: 12px 15px;
+            padding: 1rem 1.25rem;
             border: 2px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 0.75rem;
             font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: #f9faff;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #F9FAFB;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            min-height: 3.25rem;
         }
         
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.15), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             background-color: white;
+            transform: translateY(-2px);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-muted);
+            opacity: 0.8;
+            font-weight: 400;
         }
         
         .btn {
             display: block;
             width: 100%;
-            padding: 14px;
-            background: var(--primary-color);
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1E40AF 100%);
             color: white;
-            border: none;
-            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            border-radius: 0.75rem;
             font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 0.9375rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
-            margin-top: 10px;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+            letter-spacing: 0.025em;
+            position: relative;
+            overflow: hidden;
         }
         
         .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1E3A8A 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
         }
         
         .btn:active {
             transform: translateY(0);
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
         }
         
         .error-message {
-            background-color: #ffebee;
+            background: linear-gradient(135deg, #FEE2E2 0%, #FEF2F2 100%);
             color: var(--error-color);
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9375rem;
+            font-weight: 500;
             display: <?php echo $error ? 'block' : 'none'; ?>;
-            animation: fadeIn 0.3s ease;
+            animation: slideIn 0.4s ease-out;
+            border-left: 4px solid var(--error-color);
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1);
         }
         
         .form-footer {
             text-align: center;
-            margin-top: 25px;
-            font-size: 0.9rem;
-            color: #666;
+            margin-top: 2rem;
+            font-size: 0.9375rem;
+            color: var(--text-muted);
         }
         
         .form-footer a {
             color: var(--primary-color);
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
+            font-weight: 600;
+            transition: var(--transition);
         }
         
         .form-footer a:hover {
-            text-decoration: underline;
+            color: var(--primary-dark);
         }
         
         .user-type-selector {
             display: flex;
-            background: var(--light-gray);
-            border-radius: 8px;
+            background: linear-gradient(135deg, var(--light-gray) 0%, #F0F9FF 100%);
+            border-radius: 0.75rem;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 1.75rem;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
         
         .user-type-option {
             flex: 1;
             text-align: center;
-            padding: 12px;
+            padding: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            font-size: 0.9375rem;
             position: relative;
         }
         
@@ -230,11 +269,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .user-type-option label {
             display: block;
             cursor: pointer;
-            padding: 8px 0;
+            padding: 0.75rem 0;
+            margin: 0;
+            transition: var(--transition);
         }
         
         .user-type-option input[type="radio"]:checked + label {
             color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .user-type-option:hover {
+            background: rgba(37, 99, 235, 0.05);
         }
         
         .user-type-option:not(:last-child)::after {
@@ -244,26 +290,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             top: 50%;
             transform: translateY(-50%);
             width: 1px;
-            height: 60%;
-            background: rgba(0, 0, 0, 0.1);
+            height: 50%;
+            background: var(--border-color);
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-15px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         @media (max-width: 480px) {
             .login-container {
-                border-radius: 12px;
+                border-radius: 1rem;
+                margin: 1rem;
             }
             
             .login-header {
-                padding: 25px 20px 20px;
+                padding: 2rem 1.5rem 1.5rem;
             }
             
             .login-form {
-                padding: 25px 20px;
+                padding: 2rem 1.5rem;
+            }
+            
+            .form-control {
+                font-size: 1rem;
+                padding: 1rem 1.25rem;
+            }
+            
+            .btn {
+                font-size: 1rem;
+                padding: 1rem 1.5rem;
             }
         }
     </style>
