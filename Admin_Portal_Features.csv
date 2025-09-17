@@ -1,0 +1,17 @@
+﻿Module,Category,Feature,Description,Status,Priority,Notes
+Dashboard,Overview,Statistics Panel,Displays key metrics (courses, students, users, enrollments),Implemented,High,Shows real-time data
+Dashboard,Overview,Activity Feed,Shows recent system activities and user actions,Implemented,High,Last 10 activities with timestamps
+Dashboard,Quick Actions,Add New Course,Quick access button to course creation,Implemented,High,Opens course creation form
+Dashboard,Quick Actions,Add New User,Quick access to user registration,Implemented,High,Opens user registration form
+Courses,Management,List Courses,View all courses with search and filters,Implemented,High,Includes pagination and sorting
+Courses,Management,Create Course,Form to add new courses,Implemented,High,Includes rich text editor
+Courses,Management,Edit Course,Modify existing course details,Implemented,High,Inline editing available
+Courses,Management,Delete Course,Remove courses with confirmation,Implemented,High,Soft delete with archive option
+Courses,Features,Course Categories,Organize courses by categories,Pending,Medium,Needs category management UI
+Students,Management,List Students,View all students with filters,Implemented,High,Search by name, email, or ID
+Students,Management,Enroll Students,Enroll students in courses,Implemented,High,Bulk enrollment supported
+Students,Reports,Progress Tracking,View student progress in courses,Pending,Medium,Needs progress visualization
+Users,Management,User Roles,Role-based access control,Implemented,High,Admin, Instructor, Student roles
+Users,Management,Activity Logs,Track user actions,Pending,Medium,Audit trail for security
+System,Settings,Backup,Database backup and restore,Pending,Low,Scheduled backups needed
+System,Settings,Email Templates,Customize system emails,Pending,Low,Templates for notifications

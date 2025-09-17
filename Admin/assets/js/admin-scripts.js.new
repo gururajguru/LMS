@@ -1,0 +1,195 @@
+// Admin Dashboard JavaScript
+"use strict";
+
+// Navigation functions
+function loadPage(pageId) {
+    // Update navigation state
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.parentElement.classList.remove('active');
+    });
+    
+    const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
+    if (activeLink) {
+        activeLink.parentElement.classList.add('active');
+    }
+    
+    // Load the appropriate content
+    switch (pageId) {
+        case 'courses':
+            loadCourses();
+            break;
+        case 'students':
+            loadStudents();
+            break;
+        case 'lessons':
+            loadLessons();
+            break;
+        default:
+            loadDashboard();
+    }
+}
+
+// Course management functions
+function loadCourses() {
+    const container = document.getElementById('main-content');
+    if (!container) {
+        console.error('Main content container not found');
+        return;
+    }
+    
+    // Set up the courses page structure
+    container.innerHTML = `
+        <div class="container-fluid py-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">Course Management</h1>
+                <button type="button" class="btn btn-primary" onclick="showCourseForm()">
+                    <i class="fas fa-plus me-2"></i>Add Course
+                </button>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Code</th>
+                                    <th>Duration</th>
+                                    <th>Level</th>
+                                    <th>Students</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="coursesTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+    // Load courses data
+    loadCoursesData();
+}
+
+function loadCoursesData() {
+    const tbody = document.getElementById('coursesTableBody');
+    if (!tbody) {
+        console.error('Courses table body not found');
+        return;
+    }
+
+    fetch('api/courses.php')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(courses => {
+            if (!Array.isArray(courses)) {
+                throw new Error('Invalid data format received');
+            }
+
+            if (courses.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center">No courses found</td>
+                    </tr>`;
+                return;
+            }
+
+            tbody.innerHTML = courses.map(course => `
+                <tr>
+                    <td>${escapeHtml(course.name)}</td>
+                    <td>${escapeHtml(course.code)}</td>
+                    <td>${course.duration_weeks} ${course.duration_weeks === 1 ? 'week' : 'weeks'}</td>
+                    <td>${formatLevel(course.level)}</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-primary" 
+                                onclick="viewCourseStudents(${course.id}, '${escapeHtml(course.name)}', '${escapeHtml(course.code)}')">
+                            <i class="fas fa-users me-1"></i>${course.enrollment_count || 0} enrolled
+                        </button>
+                    </td>
+                    <td class="text-end">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-primary" title="View"
+                                    onclick="viewCourse(${course.id}, '${escapeHtml(course.name)}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit"
+                                    onclick="editCourse(${course.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" title="Delete"
+                                    onclick="deleteCourse(${course.id}, '${escapeHtml(course.name)}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        })
+        .catch(error => {
+            console.error('Error loading courses:', error);
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-danger">
+                        Error loading courses: ${escapeHtml(error.message)}
+                    </td>
+                </tr>`;
+        });
+}
+
+// Course actions
+function showCourseForm(courseId = null) {
+    // Implementation will be added
+    console.log('Opening course form');
+}
+
+function viewCourse(id, name) {
+    // Implementation will be added
+    console.log('Opening course view', id, name);
+}
+
+function editCourse(id) {
+    // Implementation will be added
+    console.log('Opening course editor', id);
+}
+
+function deleteCourse(id, name) {
+    // Implementation will be added
+    console.log('Opening delete confirmation', id, name);
+}
+
+function viewCourseStudents(courseId, courseName, courseCode) {
+    // Implementation will be added
+    console.log('Opening student list', courseId, courseName, courseCode);
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Set up navigation
+    document.querySelectorAll('.nav-link[data-page]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const page = this.getAttribute('data-page');
+            if (page) {
+                loadPage(page);
+            }
+        });
+    });
+    
+    // Load initial page
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page') || 'dashboard';
+    loadPage(page);
+});
