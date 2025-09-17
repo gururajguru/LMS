@@ -226,14 +226,14 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         /* Main Content */
         .main-content {
             flex: 1;
-            padding: 1.5rem;
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
             min-height: 100vh;
-            position: relative;
+            padding: 1.5rem;
             background-color: var(--lighter);
             box-sizing: border-box;
+            position: relative;
             transition: all 0.3s ease;
-            margin-left: 0;
-            width: 100%;
         }
 
         .container-fluid {
@@ -455,23 +455,26 @@ $pageTitle = isset($pageTitle) ? $pageTitle : 'Dashboard';
         }
 
         /* Mobile Responsive */
-        @media (max-width: 767.98px) {
+        @media (max-width: 991.98px) {
             .sidebar {
                 transform: translateX(-100%);
                 position: fixed;
                 top: 0;
                 bottom: 0;
                 left: 0;
+                z-index: 1040;
+                box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
                 transition: transform 0.3s ease-in-out;
             }
             
             .sidebar.show {
                 transform: translateX(0);
-                box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
             }
             
             .main-content {
                 margin-left: 0;
+                width: 100%;
+            }
                 padding: 1.25rem;
                 width: 100%;
             }
